@@ -12,4 +12,20 @@
     <string name="username">Korisničko ime</string>
     <string name="password">Lozinka</string>
     <string name="login">Uloguj se</string>
+    <string name="first_name">Ime</string>
+    <string name="last_name">Prezime</string>
+    <string name="email">E-mail</string>
+    <string name="city">Grad</string>
+    <string name="country">Drzava</string>
+    <string name="addresss">Adresa</string>
+    <string name="age">Starost</string>
+    <string-array name="countries">
+        <item>Srbija</item>
+        <item>Hrvatska</item>
+        <item>Bosna i Hercegovina</item>
+        <item>Makedonija</item>
+        <item>Crna Gora</item>
+        <item>Slovenija</item>
+    </string-array>
+
 </resources>

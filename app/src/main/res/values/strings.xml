@@ -19,6 +19,7 @@
     <string name="country">Drzava</string>
     <string name="addresss">Adresa</string>
     <string name="age">Starost</string>
+    <string name="already_registred">Imate nalog? Ulogujte se.</string>
     <string-array name="countries">
         <item>Srbija</item>
         <item>Hrvatska</item>

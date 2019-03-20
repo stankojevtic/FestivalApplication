@@ -132,6 +132,7 @@
         android:inputType="textPersonName"
         android:textSize="12sp" />
 
+
     <Button
         android:id="@+id/button_registration"
         android:layout_width="150dp"
@@ -143,27 +144,18 @@
         android:textColor="@color/colorText" />
 
 
-    <!--<TextView-->
-        <!--android:id="@+id/login"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginBottom="38dp"-->
-        <!--android:clickable="true"-->
-        <!--android:linksClickable="true"-->
-        <!--android:text="@string/already_registred"-->
-        <!--android:textColor="@android:color/black"-->
-        <!--android:textSize="15sp" />-->
-
-
-    <!--<Spinner-->
-        <!--android:id="@+id/city"-->
-        <!--android:layout_width="238dp"-->
-        <!--android:layout_height="37dp"-->
-        <!--android:layout_below="@+id/address"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:entries="@array/cities" />-->
+    <TextView
+        android:id="@+id/backtologin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="38dp"
+        android:clickable="true"
+        android:linksClickable="true"
+        android:text="@string/already_registred"
+        android:textColor="@android:color/black"
+        android:textSize="15sp" />
 
     <!--<android.widget.TextView-->
         <!--android:id="@+id/tvInvisibleError"-->

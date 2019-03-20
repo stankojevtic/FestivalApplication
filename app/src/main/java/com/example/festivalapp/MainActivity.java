@@ -5,11 +5,21 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
+import com.example.festivalapp.dummy.DummyContent;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawer;
+    private RecyclerView festivalTypeRecyclerView;
+    private RecyclerView.LayoutManager festivalTypeLayoutManager;
+    private List<DummyContent.DummyItem> festivalTypesList;
+    private FestivalTypeRecyclerAdapter festivalTypeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +34,14 @@ public class MainActivity extends AppCompatActivity {
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toogle);
         toogle.syncState();
+
+        festivalTypeRecyclerView = findViewById(R.id.festival_types_rv);
+        festivalTypeLayoutManager = new LinearLayoutManager(this);
+        festivalTypeRecyclerView.setLayoutManager(festivalTypeLayoutManager);
+        festivalTypesList = DummyContent.ITEMS;
+        festivalTypeAdapter = new FestivalTypeRecyclerAdapter(festivalTypesList);
+        festivalTypeRecyclerView.setHasFixedSize(true);
+        festivalTypeRecyclerView.setAdapter(festivalTypeAdapter);
     }
 
     @Override

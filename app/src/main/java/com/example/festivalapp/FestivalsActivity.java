@@ -1,7 +1,6 @@
 package com.example.festivalapp;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,23 +11,23 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
-import com.example.festivalapp.Adapters.FestivalTypeRecyclerAdapter;
+import com.example.festivalapp.Adapters.FestivalItemRecyclerAdapter;
 import com.example.festivalapp.dummy.DummyContent;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements FestivalTypeRecyclerAdapter.OnFestivalTypeClickListener {
+public class FestivalsActivity extends AppCompatActivity implements FestivalItemRecyclerAdapter.OnFestivalItemClickListener {
 
     private DrawerLayout drawer;
-    private RecyclerView festivalTypeRecyclerView;
-    private RecyclerView.LayoutManager festivalTypeLayoutManager;
-    private List<DummyContent.DummyItem> festivalTypesList;
-    private FestivalTypeRecyclerAdapter festivalTypeAdapter;
+    private RecyclerView festivalItemRecyclerView;
+    private RecyclerView.LayoutManager festivalItemLayoutManager;
+    private List<DummyContent.DummyItem> festivalItemsList;
+    private FestivalItemRecyclerAdapter festivalItemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_festivals);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -39,13 +38,13 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
         drawer.addDrawerListener(toogle);
         toogle.syncState();
 
-        festivalTypeRecyclerView = findViewById(R.id.festival_types_rv);
-        festivalTypeLayoutManager = new LinearLayoutManager(this);
-        festivalTypeRecyclerView.setLayoutManager(festivalTypeLayoutManager);
-        festivalTypesList = DummyContent.ITEMS;
-        festivalTypeAdapter = new FestivalTypeRecyclerAdapter(festivalTypesList, this);
-        festivalTypeRecyclerView.setHasFixedSize(true);
-        festivalTypeRecyclerView.setAdapter(festivalTypeAdapter);
+        festivalItemRecyclerView = findViewById(R.id.festival_items_rv);
+        festivalItemLayoutManager = new LinearLayoutManager(this);
+        festivalItemRecyclerView.setLayoutManager(festivalItemLayoutManager);
+        festivalItemsList = DummyContent.ITEMS;
+        festivalItemAdapter = new FestivalItemRecyclerAdapter(festivalItemsList, this);
+        festivalItemRecyclerView.setHasFixedSize(true);
+        festivalItemRecyclerView.setAdapter(festivalItemAdapter);
     }
 
     @Override
@@ -59,8 +58,8 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
 
     @Override
     public void onItemClick(int position) {
-        Log.i("blabla123", festivalTypesList.get(position).content);
-        Intent intent = new Intent(getApplicationContext(), FestivalsActivity.class);
+        Log.i("blabla123", festivalItemsList.get(position).content);
+        Intent intent = new Intent(getApplicationContext(), Activity_Register.class);
         startActivity(intent);
     }
 }

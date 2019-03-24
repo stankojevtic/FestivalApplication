@@ -3,6 +3,7 @@ package com.example.festivalapp;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,18 +12,27 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.festivalapp.Adapters.FestivalTypeRecyclerAdapter;
+import com.example.festivalapp.Models.FestivalType;
+import com.example.festivalapp.Retrofit.FestivalAppService;
+import com.example.festivalapp.Retrofit.RetrofitInstance;
 import com.example.festivalapp.dummy.DummyContent;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements FestivalTypeRecyclerAdapter.OnFestivalTypeClickListener {
 
     private DrawerLayout drawer;
     private RecyclerView festivalTypeRecyclerView;
     private RecyclerView.LayoutManager festivalTypeLayoutManager;
-    private List<DummyContent.DummyItem> festivalTypesList;
+    private List<FestivalType> festivalTypesList = new ArrayList<>();
     private FestivalTypeRecyclerAdapter festivalTypeAdapter;
 
     @Override
@@ -42,10 +52,31 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
         festivalTypeRecyclerView = findViewById(R.id.festival_types_rv);
         festivalTypeLayoutManager = new LinearLayoutManager(this);
         festivalTypeRecyclerView.setLayoutManager(festivalTypeLayoutManager);
-        festivalTypesList = DummyContent.ITEMS;
-        festivalTypeAdapter = new FestivalTypeRecyclerAdapter(festivalTypesList, this);
-        festivalTypeRecyclerView.setHasFixedSize(true);
-        festivalTypeRecyclerView.setAdapter(festivalTypeAdapter);
+
+        FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
+        Call<List<FestivalType>> call = service.getAllFestivalTypes();
+
+        final MainActivity main = this;
+
+        call.enqueue(new Callback<List<FestivalType>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<FestivalType>> call,@NonNull Response<List<FestivalType>> response) {
+                if(!response.isSuccessful())
+                {
+                   Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                    return;
+              }
+                festivalTypesList = response.body();
+                festivalTypeAdapter = new FestivalTypeRecyclerAdapter(festivalTypesList, main);
+                festivalTypeRecyclerView.setHasFixedSize(true);
+                festivalTypeRecyclerView.setAdapter(festivalTypeAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<FestivalType>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -59,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
 
     @Override
     public void onItemClick(int position) {
-        Log.i("blabla123", festivalTypesList.get(position).content);
+//        Log.i("blabla123", festivalTypesList.get(position).content);
         Intent intent = new Intent(getApplicationContext(), FestivalsActivity.class);
         startActivity(intent);
     }

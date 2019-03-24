@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.example.festivalapp.Models.FestivalType;
 import com.example.festivalapp.R;
 import com.example.festivalapp.dummy.DummyContent;
 
@@ -15,12 +16,12 @@ import java.util.List;
 
 public class FestivalTypeRecyclerAdapter extends RecyclerView.Adapter<FestivalTypeRecyclerAdapter.FestivalTypeViewHolder> {
 
-    private List<DummyContent.DummyItem> list;
+    private List<FestivalType> festivalTypes;
     private OnFestivalTypeClickListener listener;
 
-    public FestivalTypeRecyclerAdapter(List<DummyContent.DummyItem> list, OnFestivalTypeClickListener listener)
+    public FestivalTypeRecyclerAdapter(List<FestivalType> festivalTypes, OnFestivalTypeClickListener listener)
     {
-        this.list = list;
+        this.festivalTypes = festivalTypes;
         this.listener = listener;
     }
 
@@ -37,12 +38,12 @@ public class FestivalTypeRecyclerAdapter extends RecyclerView.Adapter<FestivalTy
 
     @Override
     public void onBindViewHolder(FestivalTypeViewHolder holder, int i) {
-            holder.FestivalType.setText(list.get(i).content);
+            holder.FestivalType.setText(festivalTypes.get(i).getName());
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return festivalTypes.size();
     }
 
 

@@ -8,17 +8,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.example.festivalapp.Models.Festival;
 import com.example.festivalapp.R;
-import com.example.festivalapp.dummy.DummyContent;
 
 import java.util.List;
 
 public class FestivalItemRecyclerAdapter extends RecyclerView.Adapter<FestivalItemRecyclerAdapter.FestivalItemViewHolder> {
 
-    private List<DummyContent.DummyItem> list;
+    private List<Festival> list;
     private OnFestivalItemClickListener listener;
 
-    public FestivalItemRecyclerAdapter(List<DummyContent.DummyItem> list, OnFestivalItemClickListener listener)
+    public FestivalItemRecyclerAdapter(List<Festival> list, OnFestivalItemClickListener listener)
     {
         this.list = list;
         this.listener = listener;
@@ -37,7 +37,7 @@ public class FestivalItemRecyclerAdapter extends RecyclerView.Adapter<FestivalIt
 
     @Override
     public void onBindViewHolder(FestivalItemViewHolder holder, int i) {
-        holder.FestivalItem.setText(list.get(i).content);
+        holder.FestivalItem.setText(list.get(i).getName());
     }
 
     @Override

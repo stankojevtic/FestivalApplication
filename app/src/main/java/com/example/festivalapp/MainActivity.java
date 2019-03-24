@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
                 {
                    Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
                     return;
-              }
+                }
                 festivalTypesList = response.body();
                 festivalTypeAdapter = new FestivalTypeRecyclerAdapter(festivalTypesList, main);
                 festivalTypeRecyclerView.setHasFixedSize(true);
@@ -90,8 +90,9 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
 
     @Override
     public void onItemClick(int position) {
-//        Log.i("blabla123", festivalTypesList.get(position).content);
+        int festivalTypeId = festivalTypesList.get(position).getId();
         Intent intent = new Intent(getApplicationContext(), FestivalsActivity.class);
+        intent.putExtra("festivalTypeId", festivalTypeId);
         startActivity(intent);
     }
 }

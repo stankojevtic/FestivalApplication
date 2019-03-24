@@ -2,6 +2,7 @@ package com.example.festivalapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -10,18 +11,29 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.festivalapp.Adapters.FestivalItemRecyclerAdapter;
+import com.example.festivalapp.Adapters.FestivalTypeRecyclerAdapter;
+import com.example.festivalapp.Models.Festival;
+import com.example.festivalapp.Models.FestivalType;
+import com.example.festivalapp.Retrofit.FestivalAppService;
+import com.example.festivalapp.Retrofit.RetrofitInstance;
 import com.example.festivalapp.dummy.DummyContent;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FestivalsActivity extends AppCompatActivity implements FestivalItemRecyclerAdapter.OnFestivalItemClickListener {
 
     private DrawerLayout drawer;
     private RecyclerView festivalItemRecyclerView;
     private RecyclerView.LayoutManager festivalItemLayoutManager;
-    private List<DummyContent.DummyItem> festivalItemsList;
+    private List<Festival> festivalItemsList;
+    private int festivalTypeId;
     private FestivalItemRecyclerAdapter festivalItemAdapter;
 
     @Override
@@ -41,15 +53,37 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
         festivalItemRecyclerView = findViewById(R.id.festival_items_rv);
         festivalItemLayoutManager = new LinearLayoutManager(this);
         festivalItemRecyclerView.setLayoutManager(festivalItemLayoutManager);
-        festivalItemsList = DummyContent.ITEMS;
-        festivalItemAdapter = new FestivalItemRecyclerAdapter(festivalItemsList, this);
-        festivalItemRecyclerView.setHasFixedSize(true);
-        festivalItemRecyclerView.setAdapter(festivalItemAdapter);
+        festivalTypeId = getIntent().getIntExtra("festivalTypeId", 0);
+        //festivalItemsList = DummyContent.ITEMS;
+
+        FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
+        Call<List<Festival>> call = service.getAllFestivals(festivalTypeId);
+
+        final FestivalsActivity thisActivity = this;
+
+        call.enqueue(new Callback<List<Festival>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Festival>> call, @NonNull Response<List<Festival>> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                festivalItemsList = response.body();
+                festivalItemAdapter = new FestivalItemRecyclerAdapter(festivalItemsList, thisActivity);
+                festivalItemRecyclerView.setHasFixedSize(true);
+                festivalItemRecyclerView.setAdapter(festivalItemAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<Festival>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
-        if(drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -58,7 +92,6 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
 
     @Override
     public void onItemClick(int position) {
-        Log.i("blabla123", festivalItemsList.get(position).content);
         Intent intent = new Intent(getApplicationContext(), Activity_Register.class);
         startActivity(intent);
     }

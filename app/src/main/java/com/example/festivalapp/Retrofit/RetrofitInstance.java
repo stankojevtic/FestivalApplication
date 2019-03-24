@@ -20,6 +20,7 @@ public class RetrofitInstance {
 
     private static final String BASE_URL = "http://10.0.2.2:3000/";
 
+
     public static Retrofit getInstance() {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();

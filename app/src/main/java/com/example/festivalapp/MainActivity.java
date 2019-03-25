@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Svi festivali");
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
@@ -90,9 +91,10 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
 
     @Override
     public void onItemClick(int position) {
-        int festivalTypeId = festivalTypesList.get(position).getId();
+        FestivalType festivalType = festivalTypesList.get(position);
         Intent intent = new Intent(getApplicationContext(), FestivalsActivity.class);
-        intent.putExtra("festivalTypeId", festivalTypeId);
+        intent.putExtra("festivalTypeId", festivalType.getId());
+        intent.putExtra("festivalTypeName", festivalType.getName());
         startActivity(intent);
     }
 }

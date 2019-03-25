@@ -13,15 +13,16 @@ public class Activity_Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        TextView alreadyRegisteredButon  = (TextView)findViewById(R.id.backtologin);
-        alreadyRegisteredButon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Activity_Login.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                //finish();
-                startActivity(intent);
-            }
-        });
+        //TextView alreadyRegisteredButon  = (TextView)findViewById(R.id.backtologin);
+//        alreadyRegisteredButon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), Activity_Login.class);
+//                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                //finish();
+//                startActivity(intent);
+//            }
+//        });
+//
     }
 }

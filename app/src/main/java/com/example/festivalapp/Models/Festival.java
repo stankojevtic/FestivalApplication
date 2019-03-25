@@ -3,9 +3,10 @@ package com.example.festivalapp.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Festival {
+public class Festival implements Serializable {
 
     @SerializedName("Id")
     @Expose

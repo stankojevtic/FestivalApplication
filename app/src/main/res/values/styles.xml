@@ -8,6 +8,11 @@
         <item name="colorAccent">?attr/colorError</item>
     </style>
 
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">?attr/colorError</item>
+        <item name="colorControlActivated">?attr/colorError</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

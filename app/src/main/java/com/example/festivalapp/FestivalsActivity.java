@@ -42,6 +42,8 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
         setContentView(R.layout.activity_festivals);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        String festivalTypeName = getIntent().getStringExtra("festivalTypeName");
+        toolbar.setTitle(festivalTypeName);
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
@@ -92,7 +94,9 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(getApplicationContext(), Activity_Register.class);
+        Festival festival = festivalItemsList.get(position);
+        Intent intent = new Intent(getApplicationContext(), FestivalDetailActivity.class);
+        intent.putExtra("Festival", festival);
         startActivity(intent);
     }
 }

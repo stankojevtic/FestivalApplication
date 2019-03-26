@@ -95,7 +95,7 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
     @Override
     public void onItemClick(int position) {
         Festival festival = festivalItemsList.get(position);
-        Intent intent = new Intent(getApplicationContext(), FestivalDetailActivity.class);
+        Intent intent = new Intent(getApplicationContext(), FestivalDetailTabs.class);
         intent.putExtra("Festival", festival);
         startActivity(intent);
     }

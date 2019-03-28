@@ -95,7 +95,7 @@ public class FestivalDetailTabs extends AppCompatActivity {
                     fragment = FestivalItemDetailsFragment.newInstance(festival);
                     break;
                 case 1:
-                    fragment = new FestivalItemMapFragment();
+                    fragment = FestivalItemMapFragment.newInstance(festival);
                     break;
             }
             return fragment;

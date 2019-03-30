@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class Activity_Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +17,7 @@ public class Activity_Register extends AppCompatActivity {
 //        alreadyRegisteredButon.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), Activity_Login.class);
+//                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 //                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                //finish();
 //                startActivity(intent);

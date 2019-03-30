@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.example.festivalapp.Models.Festival;
 
-public class FestivalDetailTabs extends AppCompatActivity {
+public class FestivalDetailTabsActivity extends AppCompatActivity {
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;

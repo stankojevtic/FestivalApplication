@@ -10,16 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.festivalapp.Adapters.FestivalItemRecyclerAdapter;
-import com.example.festivalapp.Adapters.FestivalTypeRecyclerAdapter;
 import com.example.festivalapp.Models.Festival;
-import com.example.festivalapp.Models.FestivalType;
 import com.example.festivalapp.Retrofit.FestivalAppService;
 import com.example.festivalapp.Retrofit.RetrofitInstance;
-import com.example.festivalapp.dummy.DummyContent;
 
 import java.util.List;
 
@@ -78,7 +74,7 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
 
             @Override
             public void onFailure(Call<List<Festival>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -95,7 +91,7 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
     @Override
     public void onItemClick(int position) {
         Festival festival = festivalItemsList.get(position);
-        Intent intent = new Intent(getApplicationContext(), FestivalDetailTabs.class);
+        Intent intent = new Intent(getApplicationContext(), FestivalDetailTabsActivity.class);
         intent.putExtra("Festival", festival);
         startActivity(intent);
     }

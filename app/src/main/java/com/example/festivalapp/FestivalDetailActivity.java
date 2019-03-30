@@ -19,7 +19,7 @@ public class FestivalDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_festival_detail);
+        setContentView(R.layout.fragment_festival_detail);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         festival = (Festival) getIntent().getSerializableExtra("Festival");

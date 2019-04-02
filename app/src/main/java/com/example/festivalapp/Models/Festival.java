@@ -63,7 +63,7 @@ public class Festival implements Serializable {
     @Expose
     public int AttendeesNumber;
 
-    @SerializedName("UserAttendings")
+    @SerializedName("Users")
     @Expose
     public List<User> UserAttendings;
 

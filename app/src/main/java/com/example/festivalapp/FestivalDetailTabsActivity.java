@@ -97,13 +97,16 @@ public class FestivalDetailTabsActivity extends AppCompatActivity {
                 case 1:
                     fragment = FestivalItemMapFragment.newInstance(festival);
                     break;
+                case 2:
+                    fragment = UserAttendingsFragment.newInstance(festival);
+                    break;
             }
             return fragment;
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
     }
 }

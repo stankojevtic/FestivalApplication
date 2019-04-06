@@ -1,6 +1,7 @@
 package com.example.festivalapp;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -41,7 +42,7 @@ public class UserAttendingsFragment extends Fragment implements UsersAttendingRe
 
         festival = (Festival) getArguments().getSerializable("Festival");
         users = festival.getUserAttendings();
-        RecyclerView userAttendingRecyclerView = (RecyclerView) rootView.findViewById(R.id.users_attending_rv);
+        userAttendingRecyclerView = (RecyclerView) rootView.findViewById(R.id.users_attending_rv);
         userAttendingLayoutManager = new LinearLayoutManager(this.getContext());
         userAttendingRecyclerView.setLayoutManager(userAttendingLayoutManager);
         usersAttendingAdapter = new UsersAttendingRecyclerAdapter(users, this);

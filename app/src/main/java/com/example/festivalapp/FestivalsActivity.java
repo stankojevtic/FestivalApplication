@@ -9,7 +9,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.festivalapp.Adapters.FestivalItemRecyclerAdapter;
@@ -52,7 +56,6 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
         festivalItemLayoutManager = new LinearLayoutManager(this);
         festivalItemRecyclerView.setLayoutManager(festivalItemLayoutManager);
         festivalTypeId = getIntent().getIntExtra("festivalTypeId", 0);
-        //festivalItemsList = DummyContent.ITEMS;
 
         FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
         Call<List<Festival>> call = service.getAllFestivals(festivalTypeId);
@@ -94,5 +97,29 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
         Intent intent = new Intent(getApplicationContext(), FestivalDetailTabsActivity.class);
         intent.putExtra("Festival", festival);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.toolbar_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                festivalItemAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return true;
     }
 }

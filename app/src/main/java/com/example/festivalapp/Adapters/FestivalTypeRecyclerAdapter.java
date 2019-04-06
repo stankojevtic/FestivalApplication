@@ -5,12 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.example.festivalapp.Models.FestivalType;
 import com.example.festivalapp.R;
-import com.example.festivalapp.dummy.DummyContent;
 
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class FestivalTypeRecyclerAdapter extends RecyclerView.Adapter<FestivalTy
     @Override
     public FestivalTypeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
             TextView textView = (TextView) LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.festival_type_text_view_layout, parent, false);
+                    .inflate(R.layout.festival_type_view_layout, parent, false);
 
             FestivalTypeViewHolder festivalTypeViewHolder = new FestivalTypeViewHolder(textView, listener);
 

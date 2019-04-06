@@ -6,12 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.festivalapp.Models.User;
 import com.example.festivalapp.R;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UsersAttendingRecyclerAdapter extends RecyclerView.Adapter<UsersAttendingRecyclerAdapter.UsersAttendingViewHolder> {
 
@@ -27,10 +30,10 @@ public class UsersAttendingRecyclerAdapter extends RecyclerView.Adapter<UsersAtt
     @NonNull
     @Override
     public UsersAttendingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        TextView textView = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.users_attending_text_view_layout, parent, false);
+        View view = (View) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.users_attending_view_layout, parent, false);
 
-        UsersAttendingViewHolder usersAttendingViewHolder = new UsersAttendingViewHolder(textView, listener);
+        UsersAttendingViewHolder usersAttendingViewHolder = new UsersAttendingViewHolder(view, listener);
 
         return usersAttendingViewHolder;
     }
@@ -48,11 +51,14 @@ public class UsersAttendingRecyclerAdapter extends RecyclerView.Adapter<UsersAtt
 
     public static class UsersAttendingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView userAttendingUsername;
-        ImageView userAttendingImage;
+        CircleImageView userAttendingImage;
+        RelativeLayout userAttendingsLayout;
         OnUserAttendingClickListener listener;
-        public UsersAttendingViewHolder(@NonNull TextView itemView, OnUserAttendingClickListener listener) {
+        public UsersAttendingViewHolder(@NonNull View itemView, OnUserAttendingClickListener listener) {
             super(itemView);
-            userAttendingUsername = itemView;
+            userAttendingImage = itemView.findViewById(R.id.user_attending_rv_image);
+            userAttendingUsername = itemView.findViewById(R.id.user_attending_rv_username);
+            userAttendingsLayout = itemView.findViewById(R.id.user_attending_rv_layout);
             this.listener = listener;
             itemView.setOnClickListener(this);
         }

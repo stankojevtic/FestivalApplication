@@ -50,6 +50,10 @@ public class User implements Serializable {
     @Expose
     public String Image;
 
+    @SerializedName("AboutMe")
+    @Expose
+    public String AboutMe;
+
     public int getId() {
         return id;
     }
@@ -92,5 +96,9 @@ public class User implements Serializable {
 
     public String getImage() {
         return Image;
+    }
+
+    public String getAboutMe() {
+        return AboutMe;
     }
 }

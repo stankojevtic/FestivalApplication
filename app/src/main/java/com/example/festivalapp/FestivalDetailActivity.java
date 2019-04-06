@@ -32,7 +32,7 @@ public class FestivalDetailActivity extends AppCompatActivity {
         drawer.addDrawerListener(toogle);
         toogle.syncState();
 
-        ((TextView)findViewById(R.id.festival_detail_name)).setText(festival.getDescription());
+        ((TextView)findViewById(R.id.festival_detail_description)).setText(festival.getDescription());
         ((RatingBar)findViewById(R.id.festival_detail_rating)).setRating(Float.parseFloat(festival.getRating()));
     }
 

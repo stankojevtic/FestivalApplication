@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.festivalapp.Models.User;
@@ -36,7 +37,7 @@ public class UsersAttendingRecyclerAdapter extends RecyclerView.Adapter<UsersAtt
 
     @Override
     public void onBindViewHolder(UsersAttendingViewHolder holder, int i) {
-        holder.userAttending.setText(users.get(i).getUsername());
+        holder.userAttendingUsername.setText(users.get(i).getUsername());
     }
 
     @Override
@@ -46,11 +47,12 @@ public class UsersAttendingRecyclerAdapter extends RecyclerView.Adapter<UsersAtt
 
 
     public static class UsersAttendingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView userAttending;
+        TextView userAttendingUsername;
+        ImageView userAttendingImage;
         OnUserAttendingClickListener listener;
         public UsersAttendingViewHolder(@NonNull TextView itemView, OnUserAttendingClickListener listener) {
             super(itemView);
-            userAttending = itemView;
+            userAttendingUsername = itemView;
             this.listener = listener;
             itemView.setOnClickListener(this);
         }

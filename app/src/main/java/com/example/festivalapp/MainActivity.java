@@ -18,7 +18,6 @@ import com.example.festivalapp.Adapters.FestivalTypeRecyclerAdapter;
 import com.example.festivalapp.Models.FestivalType;
 import com.example.festivalapp.Retrofit.FestivalAppService;
 import com.example.festivalapp.Retrofit.RetrofitInstance;
-import com.example.festivalapp.dummy.DummyContent;
 
 import java.util.ArrayList;
 import java.util.List;

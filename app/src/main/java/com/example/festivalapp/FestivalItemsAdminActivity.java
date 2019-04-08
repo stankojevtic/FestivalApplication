@@ -1,12 +1,9 @@
 package com.example.festivalapp;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -14,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.festivalapp.Adapters.FestivalItemRecyclerAdapter;
@@ -27,40 +25,38 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FestivalsActivity extends AppCompatActivity implements FestivalItemRecyclerAdapter.OnFestivalItemClickListener {
+public class FestivalItemsAdminActivity extends AppCompatActivity implements FestivalItemRecyclerAdapter.OnFestivalItemClickListener {
 
-    private DrawerLayout drawer;
     private RecyclerView festivalItemRecyclerView;
     private RecyclerView.LayoutManager festivalItemLayoutManager;
     private List<Festival> festivalItemsList;
-    private int festivalTypeId;
     private FestivalItemRecyclerAdapter festivalItemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_festivals);
+        setContentView(R.layout.activity_festival_items_admin);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        String festivalTypeName = getIntent().getStringExtra("festivalTypeName");
-        toolbar.setTitle(festivalTypeName);
+        Toolbar toolbar = findViewById(R.id.admin_toolbar);
+        toolbar.setTitle("All festivals");
         setSupportActionBar(toolbar);
 
-        drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toogle);
-        toogle.syncState();
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.festivals_admin_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFestivalDialog();
+            }
+        });
 
-        festivalItemRecyclerView = findViewById(R.id.festival_items_rv);
+        festivalItemRecyclerView = findViewById(R.id.festival_items_admin_rv);
         festivalItemLayoutManager = new LinearLayoutManager(this);
         festivalItemRecyclerView.setLayoutManager(festivalItemLayoutManager);
-        festivalTypeId = getIntent().getIntExtra("festivalTypeId", 0);
 
         FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
-        Call<List<Festival>> call = service.getAllFestivalsByType(festivalTypeId);
+        Call<List<Festival>> call = service.getAllFestivals();
 
-        final FestivalsActivity thisActivity = this;
+        final FestivalItemsAdminActivity thisActivity = this;
 
         call.enqueue(new Callback<List<Festival>>() {
             @Override
@@ -82,21 +78,15 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+    public void openFestivalDialog()
+    {
+        FestivalEditDialog dialog = new FestivalEditDialog();
+        dialog.show(getSupportFragmentManager(), "dialog");
     }
 
     @Override
     public void onItemClick(int position) {
-        Festival festival = festivalItemsList.get(position);
-        Intent intent = new Intent(getApplicationContext(), FestivalDetailTabsActivity.class);
-        intent.putExtra("Festival", festival);
-        startActivity(intent);
+
     }
 
     @Override

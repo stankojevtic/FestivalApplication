@@ -14,6 +14,9 @@ public interface FestivalAppService {
     @GET("api/festival-types/")
     Call<List<FestivalType>> getAllFestivalTypes();
 
+    @GET("api/festivals")
+    Call<List<Festival>> getAllFestivals();
+
     @GET("api/festivals/festival-type/{id}")
-    Call<List<Festival>> getAllFestivals(@Path("id")int id);
+    Call<List<Festival>> getAllFestivalsByType(@Path("id")int id);
 }

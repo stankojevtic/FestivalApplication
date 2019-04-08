@@ -28,7 +28,10 @@
         <activity
             android:name=".UserAttendingProfileActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".FestivalItemsAdminActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".FestivalDetailTabsActivity"
             android:screenOrientation="portrait"

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.example.festivalapp.Retrofit.FestivalAppService;
 import com.example.festivalapp.Retrofit.RetrofitInstance;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,9 +32,10 @@ import retrofit2.Response;
 
 public class FestivalEditDialog extends AppCompatDialogFragment {
 
-    private EditText editTextFestivalName;
-    private EditText editTextFestivalStartDate;
+//    private EditText editTextFestivalName;
+//    private EditText editTextFestivalStartDate;
     private Spinner spinnerFestivalTypes;
+
     private List<FestivalType> festivalTypes;
 
     @Override
@@ -42,8 +45,6 @@ public class FestivalEditDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_admin_festivals, null);
 
-        editTextFestivalName = view.findViewById(R.id.dialog_festival_name);
-        editTextFestivalStartDate = view.findViewById(R.id.dialog_festival_start_date);
         spinnerFestivalTypes = view.findViewById(R.id.dialog_festival_type);
 
         FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
@@ -72,7 +73,7 @@ public class FestivalEditDialog extends AppCompatDialogFragment {
             }
         });
 
-        builder.setView(view).setTitle("Save festival").setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setView(view).setTitle("Festival").setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

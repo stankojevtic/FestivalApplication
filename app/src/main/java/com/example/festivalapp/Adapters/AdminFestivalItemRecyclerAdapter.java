@@ -19,13 +19,13 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class FestivalItemRecyclerAdapter extends RecyclerView.Adapter<FestivalItemRecyclerAdapter.FestivalItemViewHolder> implements Filterable {
+public class AdminFestivalItemRecyclerAdapter extends RecyclerView.Adapter<AdminFestivalItemRecyclerAdapter.AdminFestivalItemViewHolder> implements Filterable {
 
     private List<Festival> list;
     private List<Festival> listFull;
     private OnFestivalItemClickListener listener;
 
-    public FestivalItemRecyclerAdapter(List<Festival> list, OnFestivalItemClickListener listener)
+    public AdminFestivalItemRecyclerAdapter(List<Festival> list, OnFestivalItemClickListener listener)
     {
         this.list = list;
         listFull = new ArrayList<>(list);
@@ -34,17 +34,17 @@ public class FestivalItemRecyclerAdapter extends RecyclerView.Adapter<FestivalIt
 
     @NonNull
     @Override
-    public FestivalItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+    public AdminFestivalItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View view = (View) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.festival_item_view_layout, parent, false);
+                .inflate(R.layout.admin_festival_item_view_layout, parent, false);
 
-        FestivalItemViewHolder festivalItemViewHolder = new FestivalItemViewHolder(view, listener);
+        AdminFestivalItemViewHolder festivalItemViewHolder = new AdminFestivalItemViewHolder(view, listener);
 
         return festivalItemViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(FestivalItemViewHolder holder, int i) {
+    public void onBindViewHolder(AdminFestivalItemViewHolder holder, int i) {
         holder.feistlvaItemName.setText(list.get(i).getName());
     }
 
@@ -53,21 +53,27 @@ public class FestivalItemRecyclerAdapter extends RecyclerView.Adapter<FestivalIt
         return list.size();
     }
 
-    public static class FestivalItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class AdminFestivalItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView feistlvaItemName;
         CircleImageView feistlvaItemImage;
         RelativeLayout feistlvaItemLayout;
         OnFestivalItemClickListener listener;
         ImageView festivalItemDeleteImage;
 
-        public FestivalItemViewHolder(@NonNull View itemView, final OnFestivalItemClickListener listener) {
+        public AdminFestivalItemViewHolder(@NonNull View itemView, final OnFestivalItemClickListener listener) {
             super(itemView);
-            feistlvaItemImage = itemView.findViewById(R.id.festival_item_rv_image);
-            feistlvaItemName = itemView.findViewById(R.id.festival_item_rv_username);
-            feistlvaItemLayout = itemView.findViewById(R.id.festival_item_rv_layout);
+            feistlvaItemImage = itemView.findViewById(R.id.admin_festival_item_rv_image);
+            feistlvaItemName = itemView.findViewById(R.id.admin_festival_item_rv_username);
+            feistlvaItemLayout = itemView.findViewById(R.id.admin_festival_item_rv_layout);
+            festivalItemDeleteImage = itemView.findViewById(R.id.admin_festival_item_rv_delete);
             this.listener = listener;
-
             itemView.setOnClickListener(this);
+            festivalItemDeleteImage.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    listener.onDeleteClick(getAdapterPosition());
+                }
+            });
         }
 
         @Override
@@ -77,6 +83,7 @@ public class FestivalItemRecyclerAdapter extends RecyclerView.Adapter<FestivalIt
     }
     public interface OnFestivalItemClickListener {
         void onItemClick(int position);
+        void onDeleteClick (int position);
     }
 
     @Override
@@ -114,4 +121,10 @@ public class FestivalItemRecyclerAdapter extends RecyclerView.Adapter<FestivalIt
             notifyDataSetChanged();
         }
     };
+
+    public void removeItem(int position) {
+        list.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, list.size());
+    }
 }

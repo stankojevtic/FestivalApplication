@@ -5,7 +5,9 @@ import com.example.festivalapp.Models.FestivalType;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -19,4 +21,7 @@ public interface FestivalAppService {
 
     @GET("api/festivals/festival-type/{id}")
     Call<List<Festival>> getAllFestivalsByType(@Path("id")int id);
+
+    @DELETE("api/festivals/{id}")
+    Call<ResponseBody> deleteFestival(@Path("id")int id);
 }

@@ -8,6 +8,12 @@
         <item name="colorAccent">?attr/colorError</item>
     </style>
 
+    <style name="TimePickerTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">?attr/colorError</item>
         <item name="colorControlActivated">?attr/colorError</item>

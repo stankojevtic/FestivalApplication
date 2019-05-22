@@ -3,6 +3,7 @@ package com.example.festivalapp;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -52,7 +53,8 @@ public class FestivalItemsAdminActivity extends AppCompatActivity implements Adm
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openFestivalDialog();
+                Intent intent = new Intent(getApplicationContext(), FestivalEditActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -86,11 +88,11 @@ public class FestivalItemsAdminActivity extends AppCompatActivity implements Adm
         dialog = new ProgressDialog(this);
     }
 
-    public void openFestivalDialog()
+   /* public void openFestivalDialog()
     {
         FestivalEditDialog dialog = new FestivalEditDialog();
         dialog.show(getSupportFragmentManager(), "dialog");
-    }
+    }*/
 
     @Override
     public void onItemClick(int position) {

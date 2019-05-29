@@ -67,6 +67,27 @@ public class Festival implements Serializable {
     @Expose
     public List<User> UserAttendings;
 
+    public Festival(String name,
+                    String startDate,
+                    String endDate,
+                    String startTime,
+                    String address,
+                    String latitude,
+                    String longitude,
+                    int festivalTypeId,
+                    String description)
+    {
+        this.name = name;
+        this.StartDate = startDate;
+        this.EndDate = endDate;
+        this.TimeStart = startTime;
+        this.Address = address;
+        this.LocationLatitude = latitude;
+        this.LocationLongitude = longitude;
+        this.FestivalTypeId = festivalTypeId;
+        this.Description = description;
+    }
+
     public int getId() {
         return id;
     }

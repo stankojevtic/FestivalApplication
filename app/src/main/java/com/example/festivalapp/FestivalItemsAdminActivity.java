@@ -38,7 +38,7 @@ public class FestivalItemsAdminActivity extends AppCompatActivity implements Adm
     private RecyclerView.LayoutManager festivalItemLayoutManager;
     private List<Festival> festivalItemsList;
     private AdminFestivalItemRecyclerAdapter festivalItemAdapter;
-    private ProgressDialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +62,10 @@ public class FestivalItemsAdminActivity extends AppCompatActivity implements Adm
         festivalItemLayoutManager = new LinearLayoutManager(this);
         festivalItemRecyclerView.setLayoutManager(festivalItemLayoutManager);
 
+        refreshData();
+    }
+
+    private void refreshData() {
         FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
         Call<List<Festival>> call = service.getAllFestivals();
 
@@ -85,7 +89,6 @@ public class FestivalItemsAdminActivity extends AppCompatActivity implements Adm
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        dialog = new ProgressDialog(this);
     }
 
    /* public void openFestivalDialog()
@@ -93,6 +96,12 @@ public class FestivalItemsAdminActivity extends AppCompatActivity implements Adm
         FestivalEditDialog dialog = new FestivalEditDialog();
         dialog.show(getSupportFragmentManager(), "dialog");
     }*/
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshData();
+    }
 
     @Override
     public void onItemClick(int position) {

@@ -67,7 +67,8 @@ public class FestivalItemMapFragment extends Fragment implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
 
-        LatLng location = new LatLng(45.259202, 19.822247);
+        LatLng location = new LatLng(Double.parseDouble(festival.getLocationLatitude()),
+                                     Double.parseDouble(festival.getLocationLongitude()));
 
         map = googleMap;
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);

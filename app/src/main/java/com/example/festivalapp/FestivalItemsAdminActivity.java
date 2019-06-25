@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +40,7 @@ public class FestivalItemsAdminActivity extends AppCompatActivity implements Adm
     private RecyclerView.LayoutManager festivalItemLayoutManager;
     private List<Festival> festivalItemsList;
     private AdminFestivalItemRecyclerAdapter festivalItemAdapter;
+    private SharedPreferences preferences;
 
 
     @Override
@@ -49,20 +52,56 @@ public class FestivalItemsAdminActivity extends AppCompatActivity implements Adm
         toolbar.setTitle("All festivals");
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.festivals_admin_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), FestivalEditActivity.class);
-                startActivity(intent);
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.festivals_admin_fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getApplicationContext(), FestivalEditActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         festivalItemRecyclerView = findViewById(R.id.festival_items_admin_rv);
         festivalItemLayoutManager = new LinearLayoutManager(this);
         festivalItemRecyclerView.setLayoutManager(festivalItemLayoutManager);
 
         refreshData();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_festival_detail_tabs, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.admin_logout:
+                logout();
+                return true;
+            case R.id.AddFestival:
+                addFestival();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.putString("pref_username", "");
+        edit.commit();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        finish();
+        startActivity(intent);
+    }
+
+    private void addFestival() {
+        Intent intent = new Intent(getApplicationContext(), FestivalEditActivity.class);
+        startActivity(intent);
     }
 
     private void refreshData() {
@@ -105,7 +144,10 @@ public class FestivalItemsAdminActivity extends AppCompatActivity implements Adm
 
     @Override
     public void onItemClick(int position) {
-
+        Festival festival = festivalItemsList.get(position);
+        Intent intent = new Intent(getApplicationContext(), FestivalEditActivity.class);
+        intent.putExtra("Festival", festival);
+        startActivity(intent);
     }
 
     @Override

@@ -16,7 +16,8 @@ public class RetrofitInstance {
 
     private static final HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
 
-    private static final String BASE_URL = "http://192.168.0.17/";
+     private static final String BASE_URL = "http://192.168.0.17/"; //ns
+     //private static final String BASE_URL = "http://192.168.1.18/"; //bp
     //private static final String BASE_URL = "http://172.20.10.7/";
     //private static final String BASE_URL = "http://10.0.2.2:3000/";
 

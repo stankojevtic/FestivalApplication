@@ -14,7 +14,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -45,19 +48,31 @@ public class FestivalEditActivity extends AppCompatActivity {
     private EditText descriptionEditText;
     private Button saveButton;
     private Spinner spinnerFestivalTypes;
+    private ArrayAdapter<FestivalType> festivalTypesAdapter;
     private final Calendar calendar = Calendar.getInstance();
     private DatePickerDialog.OnDateSetListener startDateOnDateListener;
     private DatePickerDialog.OnDateSetListener endDateOnDateListener;
     private List<FestivalType> festivalTypes;
+    private Festival festival;
+    private FestivalType festivalsFestivalType;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_festival_layout);
+
+        festival = (Festival) getIntent().getSerializableExtra("Festival");
+
         spinnerFestivalTypes = findViewById(R.id.dialog_festival_type);
         initializeEditText();
         initializeSpinner();
+
+
+        if(festival != null)
+        {
+            initializeValues(festival);
+        }
 
         saveButton = (Button) findViewById(R.id.Save);
 
@@ -95,7 +110,7 @@ public class FestivalEditActivity extends AppCompatActivity {
                         spinnerFestivalTypes = (Spinner) findViewById(R.id.dialog_festival_type);
                         FestivalType ft = (FestivalType) spinnerFestivalTypes.getSelectedItem();
 
-                        Festival festival = new Festival(
+                        Festival festivalToSave = new Festival(
                                 nameEditText.getText().toString(),
                                 startDateEditText.getText().toString(),
                                 endDateEditText.getText().toString(),
@@ -106,30 +121,69 @@ public class FestivalEditActivity extends AppCompatActivity {
                                 ft.getId(),
                                 descriptionEditText.getText().toString());
 
-                        FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
+                        if(festival != null)
+                        {
+                            festivalToSave.id = festival.id;
+                            FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
 
-                        Call<ResponseBody> call = service.createFestival(festival);
+                            Call<ResponseBody> call = service.updateFestival(festivalToSave);
 
-                        call.enqueue(new Callback<ResponseBody>() {
-                            @Override
-                            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                                if (!response.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
-                                    return;
+                            call.enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                                    if (!response.isSuccessful()) {
+                                        Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    finish();
+                                    Toast.makeText(getApplicationContext(), "Festival successfully updated.", Toast.LENGTH_SHORT).show();
                                 }
-                                finish();
-                                Toast.makeText(getApplicationContext(), "Festival successfully added.", Toast.LENGTH_SHORT).show();
-                            }
 
-                            @Override
-                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                                @Override
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        else {
+                            FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
+
+                            Call<ResponseBody> call = service.createFestival(festivalToSave);
+
+                            call.enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                                    if (!response.isSuccessful()) {
+                                        Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    finish();
+                                    Toast.makeText(getApplicationContext(), "Festival successfully added.", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
                     }
                 }
             }
         });
+    }
+
+    private void initializeValues(Festival festival) {
+        nameEditText.setText(festival.getName());
+        addressEditText.setText(festival.getAddress());
+
+
+
+        //spinnerFestivalTypes.setSelection(festivalTypesAdapter.getPosition(festivalsFestivalType));
+        startDateEditText.setText(festival.getStartDate());
+        endDateEditText.setText(festival.getEndDate());
+        startTimeEditText.setText(festival.getTimeStart());
+        descriptionEditText.setText(festival.getDescription());
     }
 
     public LatLng getLocationFromAddress(Context context, String strAddress) {
@@ -156,7 +210,6 @@ public class FestivalEditActivity extends AppCompatActivity {
         return p1;
     }
 
-
     private void initializeSpinner() {
         FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
         Call<List<FestivalType>> call = service.getAllFestivalTypes();
@@ -169,7 +222,7 @@ public class FestivalEditActivity extends AppCompatActivity {
                     return;
                 }
                 festivalTypes = response.body();
-                ArrayAdapter<FestivalType> festivalTypesAdapter = new
+                festivalTypesAdapter = new
                         ArrayAdapter<FestivalType>(getApplicationContext(), R.layout.spinner_custom, festivalTypes);
                 festivalTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerFestivalTypes.setAdapter(festivalTypesAdapter);

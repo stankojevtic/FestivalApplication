@@ -2,6 +2,7 @@ package com.example.festivalapp.Retrofit;
 
 import com.example.festivalapp.Models.Festival;
 import com.example.festivalapp.Models.FestivalType;
+import com.example.festivalapp.Models.User;
 
 import java.util.List;
 
@@ -31,6 +32,9 @@ public interface FestivalAppService {
 
     @POST("api/festivals")
     Call<ResponseBody> createFestival(@Body Festival festivalDTO);
+
+    @POST("api/users")
+    Call<ResponseBody> createUser(@Body User userDTO);
 
     @PUT("api/festivals")
     Call<ResponseBody> updateFestival(@Body Festival festivalDTO);

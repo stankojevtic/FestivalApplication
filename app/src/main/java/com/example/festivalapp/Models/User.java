@@ -22,6 +22,10 @@ public class User implements Serializable {
     @Expose
     public String Firstname;
 
+    @SerializedName("Password")
+    @Expose
+    public String Password;
+
     @SerializedName("Lastname")
     @Expose
     public String Lastname;
@@ -53,6 +57,29 @@ public class User implements Serializable {
     @SerializedName("AboutMe")
     @Expose
     public String AboutMe;
+
+    public User(String username,
+                    String email,
+                    String password,
+                    String firstname,
+                    String lastname,
+                    String city,
+                    String country,
+                    int age,
+                    String address)
+    {
+        this.Username = username;
+        this.Email = email;
+        this.Password = password;
+        this.Firstname = firstname;
+        this.Lastname = lastname;
+        this.City = city;
+        this.Country= country;
+        this.Age = age;
+        this.Address = address;
+        this.Role = "User";
+        this.AboutMe = "";
+    }
 
     public int getId() {
         return id;

@@ -1,5 +1,10 @@
 package com.example.festivalapp;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,8 +26,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.festivalapp.Adapters.UserFavoriteTypesRecyclerAdapter;
+import com.example.festivalapp.Models.Attend;
 import com.example.festivalapp.Models.Festival;
+import com.example.festivalapp.Models.FestivalType;
+import com.example.festivalapp.Retrofit.FestivalAppService;
+import com.example.festivalapp.Retrofit.RetrofitInstance;
+
+import org.json.JSONObject;
+
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FestivalDetailTabsActivity extends AppCompatActivity {
 
@@ -43,6 +63,9 @@ public class FestivalDetailTabsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
+
+        setUsernameInDrawer();
+
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toogle);
@@ -58,6 +81,60 @@ public class FestivalDetailTabsActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_festival_details_attend_rate, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.rate_festival:
+                rateFestival();
+                return true;
+            case R.id.attend_festival:
+                attendFestival();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void attendFestival() {
+        FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
+
+        Attend attend = new Attend(festival.getId(), getCurrentUserName());
+
+        Call<ResponseBody> call = service.attendFestival(attend);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (!response.isSuccessful()) {
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        Toast.makeText(getApplicationContext(), jObjError.getString("Message"), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                    }
+                    return;
+                }
+                Toast.makeText(getApplicationContext(), "Prijava za festival uspešna.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void rateFestival() {
+        FestivalRateDialog dialog = new FestivalRateDialog();
+        dialog.show(getSupportFragmentManager(), "Rate festival");
+    }
+
+    @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -66,14 +143,28 @@ public class FestivalDetailTabsActivity extends AppCompatActivity {
         }
     }
 
+    private void setUsernameInDrawer() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.user_info);
+        navUsername.setText(getCurrentUserName());
+    }
+
+    private String getCurrentUserName() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        return preferences.getString("pref_username", "");
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) { super(fm); }
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = null;
-            switch(position) {
+            switch (position) {
                 case 0:
                     fragment = FestivalItemDetailsFragment.newInstance(festival);
                     break;

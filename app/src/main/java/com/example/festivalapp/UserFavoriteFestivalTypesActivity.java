@@ -1,30 +1,21 @@
 package com.example.festivalapp;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.View;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.festivalapp.Adapters.FestivalTypeRecyclerAdapter;
+import com.example.festivalapp.Adapters.UserFavoriteTypesRecyclerAdapter;
 import com.example.festivalapp.Models.FestivalType;
 import com.example.festivalapp.Models.UserFestivalType;
 import com.example.festivalapp.Retrofit.FestivalAppService;
@@ -35,21 +26,26 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements FestivalTypeRecyclerAdapter.OnFestivalTypeClickListener {
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class UserFavoriteFestivalTypesActivity extends AppCompatActivity implements UserFavoriteTypesRecyclerAdapter.OnUserFestivalTypeClickListener {
 
     private DrawerLayout drawer;
-    private RecyclerView festivalTypeRecyclerView;
-    private RecyclerView.LayoutManager festivalTypeLayoutManager;
+    private RecyclerView userFavoriteFestivalTypeRecyclerView;
+    private RecyclerView.LayoutManager userFavoriteFestivalTypeLayoutManager;
     private List<FestivalType> festivalTypesList = new ArrayList<>();
-    private FestivalTypeRecyclerAdapter festivalTypeAdapter;
+    private UserFavoriteTypesRecyclerAdapter userFavoriteFestivalTypeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_user_favorite_festival_types);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Svi festivali");
+        toolbar.setTitle("Omiljeni festivali");
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
@@ -59,18 +55,18 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
         drawer.addDrawerListener(toogle);
         toogle.syncState();
 
-        setUsernameInDrawer();
+//        setUsernameInDrawer();
+//
+//        drawerFuncionality();
 
-        drawerFuncionality();
-
-        festivalTypeRecyclerView = findViewById(R.id.festival_types_rv);
-        festivalTypeLayoutManager = new LinearLayoutManager(this);
-        festivalTypeRecyclerView.setLayoutManager(festivalTypeLayoutManager);
+        userFavoriteFestivalTypeRecyclerView = findViewById(R.id.user_favorites_festival_types_rv);
+        userFavoriteFestivalTypeLayoutManager = new LinearLayoutManager(this);
+        userFavoriteFestivalTypeRecyclerView.setLayoutManager(userFavoriteFestivalTypeLayoutManager);
 
         FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
-        Call<List<FestivalType>> call = service.getAllFestivalTypes();
+        Call<List<FestivalType>> call = service.getAllFavoriteFestivalTypes(getCurrentUserName());
 
-        final MainActivity main = this;
+        final UserFavoriteFestivalTypesActivity main = this;
 
         call.enqueue(new Callback<List<FestivalType>>() {
             @Override
@@ -80,9 +76,9 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
                     return;
                 }
                 festivalTypesList = response.body();
-                festivalTypeAdapter = new FestivalTypeRecyclerAdapter(festivalTypesList, main);
-                festivalTypeRecyclerView.setHasFixedSize(true);
-                festivalTypeRecyclerView.setAdapter(festivalTypeAdapter);
+                userFavoriteFestivalTypeAdapter = new UserFavoriteTypesRecyclerAdapter(festivalTypesList, main);
+                userFavoriteFestivalTypeRecyclerView.setHasFixedSize(true);
+                userFavoriteFestivalTypeRecyclerView.setAdapter(userFavoriteFestivalTypeAdapter);
             }
 
             @Override
@@ -92,78 +88,22 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
         });
     }
 
-    private void drawerFuncionality() {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        drawer.closeDrawers();
-                        switch (menuItem.getItemId()) {
-                            case R.id.nav_logout:
-                                logOutUser();
-                                break;
-                            case R.id.nav_favorites:
-                                goToUserFavorites();
-                                break;
-                        }
-                        return true;
-                    }
-                });
-    }
-
-    private void goToUserFavorites() {
-        Intent intent = new Intent(getApplicationContext(), UserFavoriteFestivalTypesActivity.class);
-        startActivity(intent);
-    }
-
-    private void logOutUser() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor edit = preferences.edit();
-        edit.putString("pref_username", "");
-        edit.commit();
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        finish();
-        startActivity(intent);
-    }
-
-    private void setUsernameInDrawer() {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = (TextView) headerView.findViewById(R.id.user_info);
-        navUsername.setText(getCurrentUserName());
-    }
-
     private String getCurrentUserName() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         return preferences.getString("pref_username", "");
     }
 
     @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     public void onItemClick(int position) {
-        FestivalType festivalType = festivalTypesList.get(position);
-        Intent intent = new Intent(getApplicationContext(), FestivalsActivity.class);
-        intent.putExtra("festivalTypeId", festivalType.getId());
-        intent.putExtra("festivalTypeName", festivalType.getName());
-        startActivity(intent);
+
     }
 
     @Override
-    public void onFavoriteClick(final int position) {
+    public void onRemoveFavoriteClick(final int position) {
         new AlertDialog.Builder(this)
-                .setTitle("Add to favorites")
-                .setMessage("Do you really want to add this festival type to favorites?")
-                .setIcon(R.drawable.ic_favorite_festivals)
+                .setTitle("Remove from favorites")
+                .setMessage("Do you really want to remove this festival type from favorites?")
+                .setIcon(R.drawable.ic_delete)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -174,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
                                 festivalType.getId(),
                                 getCurrentUserName());
 
-                        Call<ResponseBody> call = service.createFavorite(userFestivalType);
+                        Call<ResponseBody> call = service.removeFavorite(userFestivalType);
 
                         call.enqueue(new Callback<ResponseBody>() {
                             @Override
@@ -188,7 +128,8 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
                                     }
                                     return;
                                 }
-                                Toast.makeText(getApplicationContext(), "Festival added to favorites.", Toast.LENGTH_SHORT).show();
+                                userFavoriteFestivalTypeAdapter.removeItem(position);
+                                Toast.makeText(getApplicationContext(), "Festival removed from favorites.", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override

@@ -26,6 +26,10 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
+            android:name=".UserFavoriteFestivalTypesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".UserAttendingProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

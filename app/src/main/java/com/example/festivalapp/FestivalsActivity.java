@@ -1,8 +1,11 @@
 package com.example.festivalapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.festivalapp.Adapters.FestivalItemRecyclerAdapter;
@@ -49,6 +53,8 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
+        setUsernameInDrawer();
+
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toogle);
@@ -91,6 +97,18 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
         } else {
             super.onBackPressed();
         }
+    }
+
+    private void setUsernameInDrawer() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.user_info);
+        navUsername.setText(getCurrentUserName());
+    }
+
+    private String getCurrentUserName() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        return preferences.getString("pref_username", "");
     }
 
     @Override

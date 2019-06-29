@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.festivalapp.FestivalDetailTabsActivity">
+
+    <item
+        android:id="@+id/rate_festival"
+        android:orderInCategory="100"
+        android:title="Rate this festival"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/attend_festival"
+        android:orderInCategory="100"
+        android:title="Attend this festival"
+        app:showAsAction="never" />
+</menu>

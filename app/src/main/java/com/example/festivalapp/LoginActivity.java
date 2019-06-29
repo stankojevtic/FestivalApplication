@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         else if(!usernamePrefValue.equals(""))
         {
-            goToAdminMainPage();
+            goToUserMainPage();
         }
 
         TextView registrationButton = (TextView) findViewById(R.id.registration);

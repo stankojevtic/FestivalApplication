@@ -19,7 +19,7 @@
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@id/festival_item_rv_image"
         android:fontFamily="sans-serif-condensed"
-        android:textColor="@color/colorPrimary"
+        android:textColor="#000000"
         android:textSize="18sp" />
 
     <View

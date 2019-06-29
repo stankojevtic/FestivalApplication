@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.festivalapp.Models.FestivalType;
@@ -26,17 +27,17 @@ public class FestivalTypeRecyclerAdapter extends RecyclerView.Adapter<FestivalTy
     @NonNull
     @Override
     public FestivalTypeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-            TextView textView = (TextView) LayoutInflater.from(parent.getContext())
+            View view = (View) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.festival_type_view_layout, parent, false);
 
-            FestivalTypeViewHolder festivalTypeViewHolder = new FestivalTypeViewHolder(textView, listener);
+            FestivalTypeViewHolder festivalTypeViewHolder = new FestivalTypeViewHolder(view, listener);
 
             return festivalTypeViewHolder;
     }
 
     @Override
     public void onBindViewHolder(FestivalTypeViewHolder holder, int i) {
-            holder.FestivalType.setText(festivalTypes.get(i).getName());
+            holder.festivalType.setText(festivalTypes.get(i).getName());
     }
 
     @Override
@@ -46,13 +47,22 @@ public class FestivalTypeRecyclerAdapter extends RecyclerView.Adapter<FestivalTy
 
 
     public static class FestivalTypeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView FestivalType;
+        TextView festivalType;
         OnFestivalTypeClickListener listener;
-        public FestivalTypeViewHolder(@NonNull TextView itemView, OnFestivalTypeClickListener listener) {
+        ImageView festivalAddToFavorites;
+
+        public FestivalTypeViewHolder(@NonNull View itemView, final OnFestivalTypeClickListener listener) {
             super(itemView);
-            FestivalType = itemView;
+            festivalType = itemView.findViewById(R.id.festival_type_rv_username);
+            festivalAddToFavorites = itemView.findViewById(R.id.festival_type_rv_favorite);
             this.listener = listener;
             itemView.setOnClickListener(this);
+            festivalAddToFavorites.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onFavoriteClick(getAdapterPosition());
+                }
+            });
         }
 
         @Override
@@ -62,5 +72,6 @@ public class FestivalTypeRecyclerAdapter extends RecyclerView.Adapter<FestivalTy
     }
     public interface OnFestivalTypeClickListener {
         void onItemClick(int position);
+        void onFavoriteClick (int position);
     }
 }

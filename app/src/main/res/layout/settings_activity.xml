@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="Notifications"
+        android:key="Notifications">
+
+        <CheckBoxPreference
+
+            android:key="GetNotifications"
+            android:title="Get notifications"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Profile settings"
+        android:key="ProfileSettings">
+        <Preference android:title="Change password"
+            android:key="ChangePassword" />
+        <Preference android:title="Change profile details"
+            android:key="ChangeProfileDetails" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,8 +1,10 @@
 package com.example.festivalapp;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -57,6 +59,7 @@ public class FestivalEditActivity extends AppCompatActivity {
     private FestivalType festivalsFestivalType;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,48 +72,38 @@ public class FestivalEditActivity extends AppCompatActivity {
         initializeSpinner();
 
 
-        if(festival != null)
-        {
+        if (festival != null) {
             initializeValues(festival);
         }
+
+        final FestivalEditActivity thisActivity = this;
 
         saveButton = (Button) findViewById(R.id.Save);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(nameEditText.length() == 0)
-                {
+                if (nameEditText.length() == 0) {
                     nameEditText.setError("Enter Name");
-                }
-                else if(addressEditText.length() == 0)
-                {
+                } else if (addressEditText.length() == 0) {
                     addressEditText.setError("Enter Address");
-                }
-                else if(startDateEditText.length() == 0)
-                {
+                } else if (startDateEditText.length() == 0) {
                     startDateEditText.setError("Enter Start Date");
-                }
-                else if(endDateEditText.length() == 0)
-                {
+                } else if (endDateEditText.length() == 0) {
                     endDateEditText.setError("Enter End Date");
-                }
-                else if(startTimeEditText.length() == 0)
-                {
+                } else if (startTimeEditText.length() == 0) {
                     startTimeEditText.setError("Enter Start Time");
-                }
-                else {
+                } else {
                     LatLng addressLatLng = getLocationFromAddress(FestivalEditActivity.this,
                             addressEditText.getText().toString());
 
-                    if(addressLatLng == null) {
+                    if (addressLatLng == null) {
                         addressEditText.setError("Invalid Address");
-                    }
-                    else {
+                    } else {
                         spinnerFestivalTypes = (Spinner) findViewById(R.id.dialog_festival_type);
                         FestivalType ft = (FestivalType) spinnerFestivalTypes.getSelectedItem();
 
-                        Festival festivalToSave = new Festival(
+                        final Festival festivalToSave = new Festival(
                                 nameEditText.getText().toString(),
                                 startDateEditText.getText().toString(),
                                 endDateEditText.getText().toString(),
@@ -121,52 +114,59 @@ public class FestivalEditActivity extends AppCompatActivity {
                                 ft.getId(),
                                 descriptionEditText.getText().toString());
 
-                        if(festival != null)
-                        {
-                            festivalToSave.id = festival.id;
-                            FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
+                        new AlertDialog.Builder(thisActivity)
+                                .setTitle("Save")
+                                .setMessage("Do you really want to proceed?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (festival != null) {
+                                            festivalToSave.id = festival.id;
+                                            FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
 
-                            Call<ResponseBody> call = service.updateFestival(festivalToSave);
+                                            Call<ResponseBody> call = service.updateFestival(festivalToSave);
 
-                            call.enqueue(new Callback<ResponseBody>() {
-                                @Override
-                                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                                    if (!response.isSuccessful()) {
-                                        Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
-                                        return;
+                                            call.enqueue(new Callback<ResponseBody>() {
+                                                @Override
+                                                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                                                    if (!response.isSuccessful()) {
+                                                        Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                                                        return;
+                                                    }
+                                                    finish();
+                                                    Toast.makeText(getApplicationContext(), "Festival successfully updated.", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        } else {
+                                            FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
+
+                                            Call<ResponseBody> call = service.createFestival(festivalToSave);
+
+                                            call.enqueue(new Callback<ResponseBody>() {
+                                                @Override
+                                                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                                                    if (!response.isSuccessful()) {
+                                                        Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                                                        return;
+                                                    }
+                                                    finish();
+                                                    Toast.makeText(getApplicationContext(), "Festival successfully added.", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
                                     }
-                                    finish();
-                                    Toast.makeText(getApplicationContext(), "Festival successfully updated.", Toast.LENGTH_SHORT).show();
-                                }
-
-                                @Override
-                                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                        else {
-                            FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
-
-                            Call<ResponseBody> call = service.createFestival(festivalToSave);
-
-                            call.enqueue(new Callback<ResponseBody>() {
-                                @Override
-                                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                                    if (!response.isSuccessful()) {
-                                        Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
-                                        return;
-                                    }
-                                    finish();
-                                    Toast.makeText(getApplicationContext(), "Festival successfully added.", Toast.LENGTH_SHORT).show();
-                                }
-
-                                @Override
-                                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
+                                })
+                                .setNegativeButton("No", null).show();
                     }
                 }
             }
@@ -176,7 +176,6 @@ public class FestivalEditActivity extends AppCompatActivity {
     private void initializeValues(Festival festival) {
         nameEditText.setText(festival.getName());
         addressEditText.setText(festival.getAddress());
-
 
 
         //spinnerFestivalTypes.setSelection(festivalTypesAdapter.getPosition(festivalsFestivalType));
@@ -200,7 +199,7 @@ public class FestivalEditActivity extends AppCompatActivity {
             }
 
             Address location = address.get(0);
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
 
         } catch (IOException ex) {
 
@@ -216,8 +215,7 @@ public class FestivalEditActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<FestivalType>>() {
             @Override
             public void onResponse(@NonNull Call<List<FestivalType>> call, @NonNull Response<List<FestivalType>> response) {
-                if(!response.isSuccessful())
-                {
+                if (!response.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -235,10 +233,10 @@ public class FestivalEditActivity extends AppCompatActivity {
         });
     }
 
-    private void initializeEditText(){
+    private void initializeEditText() {
         addressEditText = (EditText) findViewById(R.id.Address);
         nameEditText = (EditText) findViewById(R.id.Name);
-        startDateEditText= (EditText) findViewById(R.id.StartDate);
+        startDateEditText = (EditText) findViewById(R.id.StartDate);
         endDateEditText = (EditText) findViewById(R.id.EndDate);
         descriptionEditText = (EditText) findViewById(R.id.Description);
         startDateOnDateListener = new DatePickerDialog.OnDateSetListener() {
@@ -293,7 +291,7 @@ public class FestivalEditActivity extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(FestivalEditActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        startTimeEditText.setText( convertDate(selectedHour) + ":" + convertDate(selectedMinute));
+                        startTimeEditText.setText(convertDate(selectedHour) + ":" + convertDate(selectedMinute));
                     }
                 }, hour, minute, true);
                 mTimePicker.setTitle("Select Time");
@@ -316,7 +314,7 @@ public class FestivalEditActivity extends AppCompatActivity {
         startDateEditText.setText(sdf.format(calendar.getTime()));
     }
 
-    private void updateEndDate(){
+    private void updateEndDate() {
         String dateFormat = "dd/MM/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
         endDateEditText.setText(sdf.format(calendar.getTime()));

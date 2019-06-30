@@ -17,10 +17,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
     private RecyclerView.LayoutManager festivalTypeLayoutManager;
     private List<FestivalType> festivalTypesList = new ArrayList<>();
     private FestivalTypeRecyclerAdapter festivalTypeAdapter;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Svi festivali");
+        toolbar.setTitle("All festivals");
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
@@ -93,15 +96,22 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
     }
 
     private void drawerFuncionality() {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         drawer.closeDrawers();
+                        //navigationView.getMenu().findItem(R.id.nav_festivals).setChecked(true);
                         switch (menuItem.getItemId()) {
                             case R.id.nav_logout:
                                 logOutUser();
+                                break;
+                            case R.id.nav_festivals:
+                                //goToAllFestivals();
+                                break;
+                            case R.id.nav_settings:
+                                goToSettings();
                                 break;
                             case R.id.nav_favorites:
                                 goToUserFavorites();
@@ -116,6 +126,12 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
         Intent intent = new Intent(getApplicationContext(), UserFavoriteFestivalTypesActivity.class);
         startActivity(intent);
     }
+
+    private void goToSettings() {
+        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+        startActivity(intent);
+    }
+
 
     private void logOutUser() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -147,6 +163,14 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        navigationView.getMenu().clear();
+        navigationView.inflateMenu(R.menu.drawer_menu);
+        navigationView.getMenu().findItem(R.id.nav_festivals).setChecked(true);
     }
 
     @Override
@@ -188,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements FestivalTypeRecyc
                                     }
                                     return;
                                 }
-                                Toast.makeText(getApplicationContext(), "Festival added to favorites.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Festival type added to favorites.", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override

@@ -45,15 +45,15 @@ public class UserFavoriteFestivalTypesActivity extends AppCompatActivity impleme
         setContentView(R.layout.activity_user_favorite_festival_types);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Omiljeni festivali");
+        toolbar.setTitle("Favorite festival types");
         setSupportActionBar(toolbar);
 
-        drawer = findViewById(R.id.drawer_layout);
+       /* drawer = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toogle);
-        toogle.syncState();
+        toogle.syncState();*/
 
 //        setUsernameInDrawer();
 //
@@ -129,7 +129,7 @@ public class UserFavoriteFestivalTypesActivity extends AppCompatActivity impleme
                                     return;
                                 }
                                 userFavoriteFestivalTypeAdapter.removeItem(position);
-                                Toast.makeText(getApplicationContext(), "Festival removed from favorites.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Festival type removed from favorites.", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override

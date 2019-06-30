@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             userSuccess = response.body();
                             String adminLogged = getString(R.string.adminLogged);
-                            if (userSuccess && !usernameValue.equals(adminLogged)) {
+                            if (userSuccess && !usernameValue.contains(adminLogged)) {
                                 updateSharedPreferences(usernameValue);
                                 goToUserMainPage();
                             } else if (userSuccess) {

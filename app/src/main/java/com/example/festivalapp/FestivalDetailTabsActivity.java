@@ -66,14 +66,14 @@ public class FestivalDetailTabsActivity extends AppCompatActivity {
         toolbar.setTitle(festival.getName());
         setSupportActionBar(toolbar);
 
-        drawer = findViewById(R.id.drawer_layout);
+    /*    drawer = findViewById(R.id.drawer_layout);
 
         setUsernameInDrawer();
 
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toogle);
-        toogle.syncState();
+        toogle.syncState();*/
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -175,7 +175,7 @@ public class FestivalDetailTabsActivity extends AppCompatActivity {
             }
         });*/
     }
-
+/*
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -183,7 +183,7 @@ public class FestivalDetailTabsActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
-    }
+    }*/
 
     private void setUsernameInDrawer() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="Registracija"
+            android:text="Register"
             android:textSize="50sp" />
 
         <ImageView

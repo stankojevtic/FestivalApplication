@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -93,6 +94,9 @@ public class FestivalEditActivity extends AppCompatActivity {
                     endDateEditText.setError("Enter End Date");
                 } else if (startTimeEditText.length() == 0) {
                     startTimeEditText.setError("Enter Start Time");
+                } else if (!isDateAfter(startDateEditText.getText().toString(),
+                            endDateEditText.getText().toString())) {
+                    Toast.makeText(getApplicationContext(), "Start date can't be greater than end date.", Toast.LENGTH_SHORT).show();
                 } else {
                     LatLng addressLatLng = getLocationFromAddress(FestivalEditActivity.this,
                             addressEditText.getText().toString());
@@ -183,6 +187,26 @@ public class FestivalEditActivity extends AppCompatActivity {
         endDateEditText.setText(festival.getEndDate());
         startTimeEditText.setText(festival.getTimeStart());
         descriptionEditText.setText(festival.getDescription());
+    }
+
+    public boolean isDateAfter(String startDate, String endDate)
+    {
+        try
+        {
+            String myFormatString = "dd/MM/yy";
+            SimpleDateFormat df = new SimpleDateFormat(myFormatString);
+            Date endD = df.parse(endDate);
+            Date startD = df.parse(startDate);
+
+            if (endD.after(startD) || (!endD.before(startD) && !endD.after(startD)))
+                return true;
+            else
+                return false;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
     public LatLng getLocationFromAddress(Context context, String strAddress) {

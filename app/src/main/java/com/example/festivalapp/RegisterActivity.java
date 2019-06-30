@@ -63,6 +63,8 @@ public class RegisterActivity extends AppCompatActivity {
                     lastnameText.setError("Enter lastname");
                 } else if (ageText.getText().toString().length() == 0) {
                     ageText.setError("Enter age");
+                } else if (usernameText.getText().toString().contains("admin")) {
+                    usernameText.setError("Username can't contain admin word.");
                 } else {
 
                     User user = new User(

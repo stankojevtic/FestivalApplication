@@ -52,13 +52,13 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
         toolbar.setTitle(festivalTypeName);
         setSupportActionBar(toolbar);
 
-        drawer = findViewById(R.id.drawer_layout);
+       /* drawer = findViewById(R.id.drawer_layout);
         setUsernameInDrawer();
 
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toogle);
-        toogle.syncState();
+        toogle.syncState();*/
 
         festivalItemRecyclerView = findViewById(R.id.festival_items_rv);
         festivalItemLayoutManager = new LinearLayoutManager(this);
@@ -90,21 +90,21 @@ public class FestivalsActivity extends AppCompatActivity implements FestivalItem
         });
     }
 
-    @Override
+ /*   @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
-    }
+    }*/
 
-    private void setUsernameInDrawer() {
+    /*private void setUsernameInDrawer() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.user_info);
         navUsername.setText(getCurrentUserName());
-    }
+    }*/
 
     private String getCurrentUserName() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);

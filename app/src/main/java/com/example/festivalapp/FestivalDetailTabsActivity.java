@@ -1,5 +1,7 @@
 package com.example.festivalapp;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -8,6 +10,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.festivalapp.Adapters.FestivalTypeRecyclerAdapter;
 import com.example.festivalapp.Adapters.UserFavoriteTypesRecyclerAdapter;
 import com.example.festivalapp.Models.Attend;
 import com.example.festivalapp.Models.Festival;
@@ -130,8 +134,46 @@ public class FestivalDetailTabsActivity extends AppCompatActivity {
     }
 
     private void rateFestival() {
+        Bundle args = new Bundle();
+        args.putInt("festivalId", festival.getId());
         FestivalRateDialog dialog = new FestivalRateDialog();
+        dialog.setArguments(args);
         dialog.show(getSupportFragmentManager(), "Rate festival");
+       /* getSupportFragmentManager().executePendingTransactions();
+        dialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+
+                FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
+                Call<Festival> call = service.getFestival(festival.getId());
+
+                call.enqueue(new Callback<Festival>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Festival> call, @NonNull Response<Festival> response) {
+                        if (!response.isSuccessful()) {
+                            //
+                            return;
+                        }
+                        Festival festForUpdate = response.body();
+                        FestivalItemDetailsFragment.UpdateRateBar(festForUpdate.getRating());
+                    }
+
+                    @Override
+                    public void onFailure(Call<Festival> call, Throwable t) {
+                        //Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+//                frag.getFragmentManager().beginTransaction().detach(frag).commit();
+//                frag.getFragmentManager().beginTransaction().attach(frag).commit();
+//                FestivalItemDetailsFragment.newInstance(festival).getFragmentManager().beginTransaction()
+//                        .detach(FestivalItemDetailsFragment.newInstance(festival)).commit();
+//
+//                FestivalItemDetailsFragment.newInstance(festival).getFragmentManager().beginTransaction()
+//                        .attach(FestivalItemDetailsFragment.newInstance(festival)).commit();
+
+                       *//* getSupportFragmentManager().beginTransaction().detach().commit();*//*
+            }
+        });*/
     }
 
     @Override

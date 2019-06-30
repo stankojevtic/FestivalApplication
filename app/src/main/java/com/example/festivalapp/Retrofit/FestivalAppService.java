@@ -26,6 +26,9 @@ public interface FestivalAppService {
     @GET("api/festivals")
     Call<List<Festival>> getAllFestivals();
 
+    @GET("api/festivals/{id}")
+    Call<Festival> getFestival(@Path("id")int id);
+
     @GET("api/festivals/festival-type/{id}")
     Call<List<Festival>> getAllFestivalsByType(@Path("id")int id);
 
@@ -57,5 +60,5 @@ public interface FestivalAppService {
     Call<ResponseBody> attendFestival(@Body Attend attendDTO);
 
     @PUT("api/festivals/rate")
-    Call<ResponseBody> rateFestival(@Query("rate")int rate, @Query("festivalId")int festivalId);
+    Call<ResponseBody> rateFestival(@Query("rate")float rate, @Query("festivalId")int festivalId);
 }

@@ -11,6 +11,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.festivalapp.Models.Festival;
+import com.example.festivalapp.Retrofit.FestivalAppService;
+import com.example.festivalapp.Retrofit.RetrofitInstance;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FestivalItemDetailsFragment extends Fragment {
 

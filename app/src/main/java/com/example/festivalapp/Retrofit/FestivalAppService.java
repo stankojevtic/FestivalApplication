@@ -71,5 +71,5 @@ public interface FestivalAppService {
     Call<ResponseBody> attendFestival(@Body Attend attendDTO);
 
     @PUT("api/festivals/rate")
-    Call<ResponseBody> rateFestival(@Query("rate")float rate, @Query("festivalId")int festivalId);
+    Call<ResponseBody> rateFestival(@Query("rate")float rate, @Query("festivalId")int festivalId, @Query("username")String username);
 }

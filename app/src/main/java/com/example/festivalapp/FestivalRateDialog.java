@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -59,7 +61,7 @@ public class FestivalRateDialog extends DialogFragment {
                             FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
 
                             festivalId = getArguments().getInt("festivalId");
-                            Call<ResponseBody> call = service.rateFestival(rate, festivalId);
+                            Call<ResponseBody> call = service.rateFestival(rate, festivalId, getCurrentUserName());
 
                             call.enqueue(new Callback<ResponseBody>() {
                                 @Override
@@ -74,6 +76,7 @@ public class FestivalRateDialog extends DialogFragment {
                                         return;
                                     }
                                     Toast.makeText(inflater.getContext(), "Festival successfully rated!", Toast.LENGTH_SHORT).show();
+                                    updateRate();
                                 }
 
                                 @Override
@@ -87,20 +90,37 @@ public class FestivalRateDialog extends DialogFragment {
         return builder.create();
     }
 
-    @Override
+    private String getCurrentUserName() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        return preferences.getString("pref_username", "");
+    }
+
+    private void updateRate() {
+        FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
+        Call<Festival> call = service.getFestival(festivalId);
+
+        call.enqueue(new Callback<Festival>() {
+            @Override
+            public void onResponse(@NonNull Call<Festival> call, @NonNull Response<Festival> response) {
+                if (!response.isSuccessful()) {
+                    return;
+                }
+                final Festival festForUpdate = response.body();
+                FestivalItemDetailsFragment.UpdateRateBar(festForUpdate.getRating());
+            }
+
+            @Override
+            public void onFailure(Call<Festival> call, Throwable t) {
+                //Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /*@Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
         Call<Festival> call = service.getFestival(festivalId);
-        new CountDownTimer(1000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-            }
-
-            public void onFinish() {
-            }
-
-        }.start();
 
         call.enqueue(new Callback<Festival>() {
             @Override
@@ -118,5 +138,5 @@ public class FestivalRateDialog extends DialogFragment {
                 //Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
             }
         });
-    }
+    }*/
 }

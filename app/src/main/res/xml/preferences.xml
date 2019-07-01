@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="Notifications"
+        android:title="Notifications">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="GetNotifications"
+            android:title="Get notifications" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="ProfileSettings"
+        android:title="Profile settings">
+        <Preference
+            android:key="ChangePassword"
+            android:title="Change password" />
+        <Preference
+            android:key="ChangeProfileDetails"
+            android:title="Change profile details" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,10 +1,12 @@
 package com.example.festivalapp.Retrofit;
 
 import com.example.festivalapp.Models.Attend;
+import com.example.festivalapp.Models.ChangePassword;
 import com.example.festivalapp.Models.Festival;
 import com.example.festivalapp.Models.FestivalType;
 import com.example.festivalapp.Models.User;
 import com.example.festivalapp.Models.UserFestivalType;
+import com.example.festivalapp.Models.UserUpdate;
 
 import java.util.List;
 
@@ -28,6 +30,9 @@ public interface FestivalAppService {
 
     @GET("api/festivals/{id}")
     Call<Festival> getFestival(@Path("id")int id);
+
+    @GET("api/users/username")
+    Call<User> getUser(@Query("username")String username);
 
     @GET("api/festivals/festival-type/{id}")
     Call<List<Festival>> getAllFestivalsByType(@Path("id")int id);
@@ -55,6 +60,12 @@ public interface FestivalAppService {
 
     @POST("api/festival-types/delete-favorite")
     Call<ResponseBody> removeFavorite(@Body UserFestivalType userFestivalTypeDTO);
+
+    @PUT("api/users/change-password")
+    Call<ResponseBody> changePassword(@Body ChangePassword changePasswordDTO);
+
+    @PUT("api/users")
+    Call<ResponseBody> updateUser(@Body UserUpdate userUpdateDTO);
 
     @POST("api/festivals/attend")
     Call<ResponseBody> attendFestival(@Body Attend attendDTO);

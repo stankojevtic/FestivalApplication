@@ -123,7 +123,7 @@ public class FestivalDetailTabsActivity extends AppCompatActivity {
                     }
                     return;
                 }
-                Toast.makeText(getApplicationContext(), "Prijava za festival uspešna.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "You are now attending this festival.", Toast.LENGTH_SHORT).show();
             }
 
             @Override

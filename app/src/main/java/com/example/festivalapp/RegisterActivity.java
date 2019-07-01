@@ -96,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                             startActivity(intent);
-                            Toast.makeText(getApplicationContext(), "Uspešno ste se registrovali!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

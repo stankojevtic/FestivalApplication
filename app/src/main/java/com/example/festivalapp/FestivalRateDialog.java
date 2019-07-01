@@ -31,11 +31,12 @@ public class FestivalRateDialog extends DialogFragment {
 
     private RatingBar ratingBar;
     private int festivalId;
+    private LayoutInflater inflater;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_rate_festival, null);
         ratingBar = view.findViewById(R.id.user_rate_ratingbar);
         ratingBar.setRating(3);
@@ -65,19 +66,19 @@ public class FestivalRateDialog extends DialogFragment {
                                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                                     if (!response.isSuccessful()) {
                                         try {
-                                        /*JSONObject jObjError = new JSONObject(response.errorBody().string());
-                                        Toast.makeText(getActivity().getLayoutInflater().getContext(), jObjError.getString("Message"), Toast.LENGTH_LONG).show();*/
+                                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                                        Toast.makeText(inflater.getContext(), jObjError.getString("Message"), Toast.LENGTH_LONG).show();
                                         } catch (Exception e) {
-                                            //Toast.makeText(getActivity().getLayoutInflater().getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(inflater.getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
                                         }
                                         return;
                                     }
-                                    //Toast.makeText(getActivity(), "Uspesno ocenjen festival.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(inflater.getContext(), "Festival successfully rated!", Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
                                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                    //Toast.makeText(getActivity().getLayoutInflater().getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(inflater.getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }

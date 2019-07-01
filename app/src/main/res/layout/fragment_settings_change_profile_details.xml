@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/change_profile_details_dialog"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal|center_vertical"
+    android:gravity="center_horizontal|center_vertical">
+
+    <TextView
+        android:id="@+id/change_profile_details_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="8dp"
+        android:text="Update profile"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/change_firstname"
+        android:layout_width="208dp"
+        android:layout_below="@+id/change_profile_details_textview"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_user_logo"
+        android:ems="10"
+        android:hint="Firstname"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/change_lastname"
+        android:layout_width="208dp"
+        android:layout_below="@+id/change_firstname"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_user_logo"
+        android:ems="10"
+        android:hint="Lastname"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/change_age"
+        android:layout_width="208dp"
+        android:layout_below="@+id/change_lastname"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_user_logo"
+        android:ems="10"
+        android:hint="Age"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/change_city"
+        android:layout_width="208dp"
+        android:layout_below="@+id/change_age"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_user_logo"
+        android:ems="10"
+        android:hint="City"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/change_country"
+        android:layout_width="208dp"
+        android:layout_below="@+id/change_city"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_user_logo"
+        android:ems="10"
+        android:hint="Country"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/change_address"
+        android:layout_width="208dp"
+        android:layout_below="@+id/change_country"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_user_logo"
+        android:ems="10"
+        android:hint="Address"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/change_aboutme"
+        android:layout_width="208dp"
+        android:layout_below="@+id/change_address"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_user_logo"
+        android:ems="10"
+        android:hint="About me"
+        android:inputType="textPersonName" />
+
+</RelativeLayout>

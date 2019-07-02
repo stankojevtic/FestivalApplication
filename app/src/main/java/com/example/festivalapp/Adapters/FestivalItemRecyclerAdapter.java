@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.festivalapp.Helpers.BitmapConvertor;
 import com.example.festivalapp.Models.Festival;
 import com.example.festivalapp.R;
 
@@ -46,6 +47,7 @@ public class FestivalItemRecyclerAdapter extends RecyclerView.Adapter<FestivalIt
     @Override
     public void onBindViewHolder(FestivalItemViewHolder holder, int i) {
         holder.feistlvaItemName.setText(list.get(i).getName());
+        holder.feistlvaItemImage.setImageBitmap(BitmapConvertor.StringToBitMap(list.get(i).getImage()));
     }
 
     @Override

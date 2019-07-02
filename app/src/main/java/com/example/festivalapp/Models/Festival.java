@@ -75,7 +75,8 @@ public class Festival implements Serializable {
                     String latitude,
                     String longitude,
                     int festivalTypeId,
-                    String description)
+                    String description,
+                    String image)
     {
         this.name = name;
         this.StartDate = startDate;
@@ -86,6 +87,7 @@ public class Festival implements Serializable {
         this.LocationLongitude = longitude;
         this.FestivalTypeId = festivalTypeId;
         this.Description = description;
+        this.Image = image;
     }
 
     public int getId() {

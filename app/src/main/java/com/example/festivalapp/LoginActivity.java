@@ -71,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (passwordText.length() == 0) {
                     passwordText.setError("Enter password");
                 } else {
+                    usernameValue = usernameValue.toLowerCase();
                     FestivalAppService service = RetrofitInstance.getInstance().create(FestivalAppService.class);
 
                     Call<Boolean> call = service.userLogin(usernameValue, passwordValue);

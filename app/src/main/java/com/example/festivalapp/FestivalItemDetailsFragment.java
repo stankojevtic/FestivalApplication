@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.festivalapp.Helpers.BitmapConvertor;
 import com.example.festivalapp.Models.Festival;
 import com.example.festivalapp.Retrofit.FestivalAppService;
 import com.example.festivalapp.Retrofit.RetrofitInstance;
@@ -41,6 +43,7 @@ public class FestivalItemDetailsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_festival_detail, container, false);
         festival = (Festival) getArguments().getSerializable("Festival");
         ratingBar = ((RatingBar)rootView.findViewById(R.id.festival_detail_rating));
+        ((ImageView)rootView.findViewById(R.id.festival_detail_image)).setImageBitmap(BitmapConvertor.StringToBitMap(festival.getImage()));
         ((TextView)rootView.findViewById(R.id.festival_detail_description)).setText(festival.getDescription());
         ((TextView)rootView.findViewById(R.id.festival_detail_address)).setText(festival.getAddress());
         ((TextView)rootView.findViewById(R.id.festival_detail_start_date)).setText(festival.getStartDate().toString());

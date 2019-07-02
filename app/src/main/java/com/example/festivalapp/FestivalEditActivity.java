@@ -5,10 +5,15 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,6 +21,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -23,6 +29,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.festivalapp.Helpers.BitmapConvertor;
 import com.example.festivalapp.Models.Festival;
 import com.example.festivalapp.Models.FestivalType;
 import com.example.festivalapp.Retrofit.FestivalAppService;
@@ -58,7 +65,9 @@ public class FestivalEditActivity extends AppCompatActivity {
     private List<FestivalType> festivalTypes;
     private Festival festival;
     private FestivalType festivalsFestivalType;
-
+    private Button buttonChooseImage;
+    private ImageView image;
+    private Bitmap bitmap;
 
 
     @Override
@@ -71,7 +80,7 @@ public class FestivalEditActivity extends AppCompatActivity {
         spinnerFestivalTypes = findViewById(R.id.dialog_festival_type);
         initializeEditText();
         initializeSpinner();
-
+        initializeImage();
 
         if (festival != null) {
             initializeValues(festival);
@@ -94,6 +103,8 @@ public class FestivalEditActivity extends AppCompatActivity {
                     endDateEditText.setError("Enter End Date");
                 } else if (startTimeEditText.length() == 0) {
                     startTimeEditText.setError("Enter Start Time");
+                } else if (image.getDrawable() == null) {
+                    Toast.makeText(getApplicationContext(), "Please upload image for this festival.", Toast.LENGTH_SHORT).show();
                 } else if (!isDateAfter(startDateEditText.getText().toString(),
                             endDateEditText.getText().toString())) {
                     Toast.makeText(getApplicationContext(), "Start date can't be greater than end date.", Toast.LENGTH_SHORT).show();
@@ -107,6 +118,8 @@ public class FestivalEditActivity extends AppCompatActivity {
                         spinnerFestivalTypes = (Spinner) findViewById(R.id.dialog_festival_type);
                         FestivalType ft = (FestivalType) spinnerFestivalTypes.getSelectedItem();
 
+                        Bitmap bitmap123 = bitmap;
+
                         final Festival festivalToSave = new Festival(
                                 nameEditText.getText().toString(),
                                 startDateEditText.getText().toString(),
@@ -116,7 +129,8 @@ public class FestivalEditActivity extends AppCompatActivity {
                                 String.valueOf(addressLatLng.latitude),
                                 String.valueOf(addressLatLng.longitude),
                                 ft.getId(),
-                                descriptionEditText.getText().toString());
+                                descriptionEditText.getText().toString(),
+                                BitmapConvertor.BitMapToString(bitmap));
 
                         new AlertDialog.Builder(thisActivity)
                                 .setTitle("Save")
@@ -180,8 +194,8 @@ public class FestivalEditActivity extends AppCompatActivity {
     private void initializeValues(Festival festival) {
         nameEditText.setText(festival.getName());
         addressEditText.setText(festival.getAddress());
-
-
+        image.setImageBitmap(BitmapConvertor.StringToBitMap(festival.getImage()));
+        bitmap = BitmapConvertor.StringToBitMap(festival.getImage());
         //spinnerFestivalTypes.setSelection(festivalTypesAdapter.getPosition(festivalsFestivalType));
         startDateEditText.setText(festival.getStartDate());
         endDateEditText.setText(festival.getEndDate());
@@ -255,6 +269,38 @@ public class FestivalEditActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void initializeImage() {
+        buttonChooseImage = (Button) findViewById(R.id.choose_image_button);
+        image = (ImageView) findViewById(R.id.festival_image);
+        buttonChooseImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, 555);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 555 && resultCode == RESULT_OK && data != null)
+        {
+            Uri path = data.getData();
+
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
+                image.setImageBitmap(bitmap);
+                image.setVisibility(View.VISIBLE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initializeEditText() {

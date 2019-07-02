@@ -27,8 +27,25 @@
                 android:id="@+id/Id"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="invisible"
-                android:text="0" />
+                android:text="0"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/festival_image"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="fitXY"
+                android:layout_weight="1"
+                android:padding="1dp"/>
+
+
+            <Button
+                android:id="@+id/choose_image_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:text="Upload image" />
 
             <EditText
                 android:id="@+id/Name"
@@ -39,12 +56,12 @@
 
             <Spinner
                 android:id="@+id/dialog_festival_type"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Festival type"
-                android:textColor="#000000"
                 android:spinnerMode="dropdown"
-                style="@style/Widget.AppCompat.Spinner.Underlined"/>
+                android:textColor="#000000" />
 
             <EditText
                 android:id="@+id/Address"

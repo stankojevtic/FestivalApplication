@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.festivalapp.Adapters.FestivalTypeRecyclerAdapter;
@@ -38,11 +40,14 @@ public class UserFavoriteFestivalTypesActivity extends AppCompatActivity impleme
     private RecyclerView.LayoutManager userFavoriteFestivalTypeLayoutManager;
     private List<FestivalType> festivalTypesList = new ArrayList<>();
     private UserFavoriteTypesRecyclerAdapter userFavoriteFestivalTypeAdapter;
+    private TextView emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_favorite_festival_types);
+
+        emptyView = findViewById(R.id.no_favorite_festival_types);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Favorite festival types");
@@ -76,9 +81,18 @@ public class UserFavoriteFestivalTypesActivity extends AppCompatActivity impleme
                     return;
                 }
                 festivalTypesList = response.body();
-                userFavoriteFestivalTypeAdapter = new UserFavoriteTypesRecyclerAdapter(festivalTypesList, main);
-                userFavoriteFestivalTypeRecyclerView.setHasFixedSize(true);
-                userFavoriteFestivalTypeRecyclerView.setAdapter(userFavoriteFestivalTypeAdapter);
+                if(festivalTypesList.isEmpty())
+                {
+                    userFavoriteFestivalTypeRecyclerView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                }
+                else {
+                    userFavoriteFestivalTypeAdapter = new UserFavoriteTypesRecyclerAdapter(festivalTypesList, main);
+                    userFavoriteFestivalTypeRecyclerView.setHasFixedSize(true);
+                    userFavoriteFestivalTypeRecyclerView.setAdapter(userFavoriteFestivalTypeAdapter);
+                    emptyView.setVisibility(View.GONE);
+                    userFavoriteFestivalTypeRecyclerView.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -129,6 +143,11 @@ public class UserFavoriteFestivalTypesActivity extends AppCompatActivity impleme
                                     return;
                                 }
                                 userFavoriteFestivalTypeAdapter.removeItem(position);
+                                if(userFavoriteFestivalTypeAdapter.getItemCount() == 0)
+                                {
+                                    userFavoriteFestivalTypeRecyclerView.setVisibility(View.GONE);
+                                    emptyView.setVisibility(View.VISIBLE);
+                                }
                                 Toast.makeText(getApplicationContext(), "Festival type removed from favorites.", Toast.LENGTH_SHORT).show();
                             }
 
